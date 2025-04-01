@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "n8n": {
       "main": [
@@ -531,8 +531,7 @@
         "rule": {
           "interval": [
             {
-              "field": "hours",
-              "hoursInterval": 2
+              "field": "hours"
             }
           ]
         }
@@ -709,9 +708,13 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-04-01T01:41:34.000Z",
-  "versionId": "19aa5459-d8cf-4634-8db0-7f79b5f61d1d"
+  "triggerCount": 1,
+  "updatedAt": "2025-04-01T01:42:55.000Z",
+  "versionId": "c1640360-1ceb-46c3-9fa4-d6a37a477530"
 }
