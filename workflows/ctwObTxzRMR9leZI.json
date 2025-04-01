@@ -1,0 +1,571 @@
+{
+  "active": true,
+  "connections": {
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Tìm File Ảnh",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gộp content và ảnh",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "danh sách content ": {
+      "main": [
+        [
+          {
+            "node": "Lấy 1 dòng ngẫu nhiên GSheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tìm File Ảnh": {
+      "main": [
+        [
+          {
+            "node": "Tải Ảnh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tải Ảnh": {
+      "main": [
+        [
+          {
+            "node": "Upload ảnh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload ảnh": {
+      "main": [
+        [
+          {
+            "node": "Lấy ID ảnh ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy ID ảnh ": {
+      "main": [
+        [
+          {
+            "node": "Gộp content và ảnh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gộp content và ảnh": {
+      "main": [
+        [
+          {
+            "node": "Đăng Bài",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Đăng Bài": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy 1 dòng ngẫu nhiên GSheet2": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "danh sách content ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "danh sách content ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-25T02:51:54.529Z",
+  "id": "ctwObTxzRMR9leZI",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "AUTO ĐĂNG BÀI BH ANHNGOC",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.message }}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "1451e5bd-9c7c-41c6-bb55-110d9509deca",
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        120,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Kw1sFYPRu0Gbmg0dG7qwd-UWL6haFZ1autnMVxgLMZw",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kw1sFYPRu0Gbmg0dG7qwd-UWL6haFZ1autnMVxgLMZw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "661a4c4f-648c-44a7-a9a6-3481f8c4782e",
+      "name": "danh sách content ",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.2,
+      "position": [
+        -680,
+        100
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "queryString": "*.jpg",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $json['Hình ảnh'] }}",
+            "mode": "url"
+          }
+        },
+        "options": {
+          "fields": "={{ [\"mimeType\",\"id\",\"webContentLink\",\"name\"] }}"
+        }
+      },
+      "id": "39de9188-552e-41a1-8c00-d40bfc6a7d83",
+      "name": "Tìm File Ảnh",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        340,
+        -240
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "njiKm9DQVjFfs3lj",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        580,
+        -240
+      ],
+      "id": "e7277454-a10e-4e14-b0ef-54e22c947951",
+      "name": "Tải Ảnh",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "njiKm9DQVjFfs3lj",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "me",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "published",
+                "value": "=false"
+              }
+            ]
+          }
+        }
+      },
+      "id": "91b1dd0f-56e0-4847-8f50-47ed5171b3ad",
+      "name": "Upload ảnh",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -240
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "COtI7pyuFGE2g7Th",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const uploadedPhotos = $items(\"Upload ảnh\");\nreturn [{\n  attached_media: uploadedPhotos.map(photo => ({\n    media_fbid: photo.json.id\n  }))\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -240
+      ],
+      "id": "6412a626-0a99-4380-b06a-506aa3d28060",
+      "name": "Lấy ID ảnh "
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1320,
+        -220
+      ],
+      "id": "b9b1f33f-14a7-4ff9-a725-0e695ef13765",
+      "name": "Gộp content và ảnh"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json['Mô tả'] }}"
+              },
+              {
+                "name": "attached_media",
+                "value": "={{ $json.attached_media }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1460,
+        -220
+      ],
+      "id": "f32c223a-94e1-4485-9ec4-42389cc05a2b",
+      "name": "Đăng Bài",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "COtI7pyuFGE2g7Th",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Nhận dữ liệu từ Google Sheets (input từ node trước đó)\nconst sheetData = items.map(item => item.json);\n\n// Lọc những dòng có cột \"Trạng thái\" trống (chưa chạy)\nconst pendingRows = sheetData.filter(row => !row[\"Trạng thái\"] || row[\"Trạng thái\"].trim() === \"\");\n\n// Kiểm tra nếu không có dòng nào thỏa mãn\nif (pendingRows.length === 0) {\n  return [{ json: { message: \"Không có dòng nào có trạng thái trống (chưa chạy).\" } }];\n}\n\n// Lấy ngẫu nhiên một dòng từ danh sách đã lọc\nconst randomIndex = Math.floor(Math.random() * pendingRows.length);\nconst selectedRow = pendingRows[randomIndex];\n\n// Trả về dòng được chọn\nreturn [{ json: selectedRow }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -180,
+        60
+      ],
+      "id": "9d481645-0555-4cb6-8fcd-fd407abb85fc",
+      "name": "Lấy 1 dòng ngẫu nhiên GSheet2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Kw1sFYPRu0Gbmg0dG7qwd-UWL6haFZ1autnMVxgLMZw/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Kw1sFYPRu0Gbmg0dG7qwd-UWL6haFZ1autnMVxgLMZw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Trạng thái": "Đã Đăng",
+            "row_number": "={{ $('IF1').item.json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "STT",
+              "displayName": "STT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tên",
+              "displayName": "Tên",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Mô tả",
+              "displayName": "Mô tả",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Hình ảnh",
+              "displayName": "Hình ảnh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trạng thái",
+              "displayName": "Trạng thái",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mẫu",
+              "displayName": "Mẫu",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1680,
+        -220
+      ],
+      "id": "742d2f9e-cd7d-46a1-98ff-910d99194b4a",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 2,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1700,
+        40
+      ],
+      "id": "af0ec3bf-090d-4ee5-8444-15b8b9aca64f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        1880,
+        140
+      ],
+      "id": "e3006d89-77f2-4bb9-a362-03325c95940e"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        140
+      ],
+      "id": "f65bfaf0-d2d0-4882-b5a4-1c4a202c1fb3",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-03-19T18:00:48.012+07:00",
+          "Readable date": "March 19th 2025, 6:00:48 pm",
+          "Readable time": "6:00:48 pm",
+          "Day of week": "Wednesday",
+          "Year": "2025",
+          "Month": "March",
+          "Day of month": "19",
+          "Hour": "18",
+          "Minute": "00",
+          "Second": "48",
+          "Timezone": "Asia/Saigon (UTC+07:00)"
+        }
+      }
+    ]
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-25T02:57:50.000Z",
+  "versionId": "edf66bae-8ba3-4c1b-ad16-d178be6e66e0"
+}
