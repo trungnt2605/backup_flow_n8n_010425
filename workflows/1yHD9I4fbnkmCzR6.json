@@ -240,7 +240,9 @@
   },
   "createdAt": "2025-04-01T01:35:23.799Z",
   "id": "1yHD9I4fbnkmCzR6",
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "name": "2307-backup-your-credentials-to-github",
   "nodes": [
     {
@@ -461,7 +463,13 @@
         1780,
         920
       ],
-      "typeVersion": 1
+      "typeVersion": 1,
+      "credentials": {
+        "githubApi": {
+          "id": "WEVqntlsT9hodR5O",
+          "name": "GitHub account"
+        }
+      }
     },
     {
       "parameters": {
@@ -488,7 +496,13 @@
         1780,
         740
       ],
-      "typeVersion": 1
+      "typeVersion": 1,
+      "credentials": {
+        "githubApi": {
+          "id": "WEVqntlsT9hodR5O",
+          "name": "GitHub account"
+        }
+      }
     },
     {
       "parameters": {
@@ -582,6 +596,12 @@
       ],
       "typeVersion": 1,
       "alwaysOutputData": true,
+      "credentials": {
+        "githubApi": {
+          "id": "WEVqntlsT9hodR5O",
+          "name": "GitHub account"
+        }
+      },
       "continueOnFail": true
     },
     {
@@ -592,13 +612,13 @@
               "id": "6cf546c5-5737-4dbd-851b-17d68e0a3780",
               "name": "repo.owner",
               "type": "string",
-              "value": "john-doe"
+              "value": "trungnt2605"
             },
             {
               "id": "452efa28-2dc6-4ea3-a7a2-c35d100d0382",
               "name": "repo.name",
               "type": "string",
-              "value": "n8n-backup"
+              "value": "backup_flow_n8n_010425"
             },
             {
               "id": "81c4dc54-86bf-4432-a23f-22c7ea831e74",
@@ -697,6 +717,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-01T01:35:58.000Z",
-  "versionId": "d037313c-1d29-42be-91a4-fdde93b27da3"
+  "updatedAt": "2025-04-01T01:45:46.000Z",
+  "versionId": "6a5cfbfe-1ee3-4540-af11-223a3837abac"
 }
