@@ -1,0 +1,104 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-31T07:13:54.491Z",
+  "id": "5lBjFdDCq1Rsqbaq",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Bot phiên âm tiếng anh",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        -60
+      ],
+      "id": "cb494f0d-6687-494d-89d9-f14e9d0e8754",
+      "name": "Telegram Trigger",
+      "webhookId": "8819e68e-82bc-4832-a600-c1cc6f627bf5",
+      "credentials": {
+        "telegramApi": {
+          "id": "JJGUPzvDnCZm1f6e",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "\n- Hãy đọc phát âm đoạn văn theo cách tiếng việt cho tôi\n- Dịch đoạn văn sang tiếng việt\n\nđoạn văn: \n {{ $json.message.text }}",
+        "options": {
+          "systemMessage": "Bạn là một chuyên gia về lĩnh vực Anh Văn. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -180,
+        -60
+      ],
+      "id": "78e7ec92-f45a-4b59-94d1-8d89fcf704cc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro-exp-03-25",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        160
+      ],
+      "id": "b0202e6e-ff45-46aa-a2f3-128a1a6b0b0d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "OQhJcKYWadD9NHUa",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-31T09:04:51.000Z",
+  "versionId": "525e9e74-ab29-4908-bd2a-a9c74c17ea30"
+}
