@@ -1,0 +1,392 @@
+{
+  "active": false,
+  "connections": {
+    "YouTube": {
+      "main": [
+        [
+          {
+            "node": "YouTube1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video1": {
+      "main": [
+        [
+          {
+            "node": "Upload attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload attachments": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "title",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "title": {
+      "main": [
+        [
+          {
+            "node": "des",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Try Again",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "des",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "des": {
+      "main": [
+        [
+          {
+            "node": "Download Video1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Try Again1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-28T08:40:45.256Z",
+  "id": "eDHFEI3L3JVhpbii",
+  "meta": null,
+  "name": "Tự Động Đăng Video Facebook Reels sang YouTube Shorts 100% với N8n",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $(\"title\").item.json.output }}",
+        "regionCode": "VN",
+        "categoryId": "27",
+        "binaryProperty": "=data",
+        "options": {
+          "description": "={{ $(\"des\").item.json.output }}",
+          "embeddable": true,
+          "privacyStatus": "unlisted",
+          "selfDeclaredMadeForKids": false
+        }
+      },
+      "name": "YouTube",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        1720,
+        20
+      ],
+      "typeVersion": 1,
+      "id": "746972c2-7ade-410a-b3df-89ba7aa30c2c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/scraper-mind~facebook-video-downloader/run-sync-get-dataset-items?token=API-HERE",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"video_urls\": [\n        {\n            \"url\": \"https://www.facebook.com/reel/1156309116031116\",\n            \"method\": \"GET\"\n        }\n    ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "02eead2d-d044-4d25-bb23-f50ec85a5560",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('HTTP Request').item.json.download_links.merged_video }}",
+        "responseFormat": "file",
+        "options": {}
+      },
+      "name": "Download Video1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        20
+      ],
+      "id": "7cb27af9-6c03-4a5e-89f6-4dfa757b8510"
+    },
+    {
+      "parameters": {
+        "name": "={{`video_${Date.now()}.mp4`}}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1uuddjWOaObwUORUL8LwB95qsOCgD_gnj",
+          "mode": "list",
+          "cachedResultName": "grabvideo",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1uuddjWOaObwUORUL8LwB95qsOCgD_gnj"
+        },
+        "options": {}
+      },
+      "id": "e7678d4c-75ea-4b47-87ec-bc2867521ef4",
+      "name": "Upload attachments",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        1360,
+        20
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f2a8ff2d-6b59-4ad6-a2e7-8705354f4105",
+              "name": "response",
+              "value": "Error occurred. Please try again.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        580,
+        240
+      ],
+      "id": "f44f65cb-1613-4233-b3d7-ea252fa0dce0",
+      "name": "Try Again"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        360,
+        200
+      ],
+      "id": "09b4d3e6-6a91-4f04-9784-79d151906bf7",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.general_metadata.title }}",
+        "options": {
+          "systemMessage": "=# Overview\nYou are a professional social media content creator and researcher who specializes in creating engaging, well-structured, AI-enhanced content for YouTube posts. Your expertise lies in creating engaging content that is relevant to Vietnamese-speaking professionals\n\n## Main Task\nBased on the information I provide, write me a compelling YouTube title\n\n## Social Media Content Requirements\n- **Language**: All content must be written in Vietnamese.\n\n- **Format**:\n- Use short, impactful sentences with appropriate line breaks for readability.\n\n- Include clear calls to action to drive audience engagement.\n\n- **Structure**: Apply storytelling techniques, emotional triggers, or provocative questions to drive engagement.\n- **Brand Alignment**: Ensure the tone and style are consistent with the intended brand or personal brand, reflecting the interests identified in the Google Docs examples analyzed.\n\n- **Focus on Engagement**: Each post should end with a thought-provoking **question** to drive engagement.\n\n- **Readability**: Content should be structured into short paragraphs for an optimal mobile experience.\n\n- [add power words to content]\n\n## Output Requirements\n- **Language**: Vietnamese\n-titles should be no more than 80 characters.\n- không sử dụng icon và hashtag.\n- chỉ trả 1 kết quả tốt nhất và không thêm bất kỳ nội dung gì khác"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        20
+      ],
+      "id": "2d90e959-3bd5-4163-ba65-a072c2c5d873",
+      "name": "title",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f2a8ff2d-6b59-4ad6-a2e7-8705354f4105",
+              "name": "response",
+              "value": "Error occurred. Please try again.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1000,
+        240
+      ],
+      "id": "446803b9-8c3a-4393-9561-03b30884c487",
+      "name": "Try Again1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        800,
+        200
+      ],
+      "id": "843faa75-6ee5-4ae0-9810-e7cc1a7174fc",
+      "name": "Google Gemini Chat Model1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ nodes[\"HTTP Request\"].output.general_metadata.title }}\n",
+        "options": {
+          "systemMessage": "=# Overview\nYou are a professional social media content creator and researcher specializing in creating engaging, well-structured, AI-enhanced content for youtube posts. Your expertise lies in creating engaging content that resonates with Vietnamese-speaking professionals\n\n## Main Task\nBased on the information I provide, write me a compelling youtube video description with full hashtags\n\n## Social Content Requirements\n- **Language**: All content must be written in Vietnamese.\n- **Format**:\n- Use short, impactful sentences with appropriate line breaks for readability.\n- Incorporate emojis and hashtags where appropriate to increase engagement and visibility.\n- Include clear calls to action to drive audience engagement.\n- **Structure**: Use storytelling techniques, emotional triggers, or provocative questions to drive engagement.\n\n- **Brand Alignment**: Ensure the tone and style are consistent with the intended brand or personal brand, reflecting the interests identified in the Google Docs examples analyzed.\n\n- **Focus on Engagement**: Each post should end with a thought-provoking **question** to drive engagement.\n\n- **Readability**: Content should be structured into short paragraphs for an optimal mobile experience.\n\n- **Hashtags**: Include **3 relevant hashtags** at the end of each post.\n\n- [add power words to content]\n\n## Output Requirements\n- **Language**: Vietnamese"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        800,
+        20
+      ],
+      "id": "dd3e47d3-0f31-4c6c-9d47-34fc7ca5f68d",
+      "name": "des",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1540,
+        20
+      ],
+      "id": "4e329448-3357-4af1-bf3c-647a7b8a8a5c",
+      "name": "Google Drive1"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ $json.uploadId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        1880,
+        20
+      ],
+      "id": "7922dfc5-90c1-43ee-9a5e-760924784c7c",
+      "name": "YouTube1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "452c3367-3e64-4237-86f9-09491c2a9f07",
+      "name": "When clicking ‘Test workflow’"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-28T08:40:45.256Z",
+  "versionId": "1cb8f608-cbda-419f-87b1-7a660ba24980"
+}
