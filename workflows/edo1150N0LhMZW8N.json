@@ -1,0 +1,629 @@
+{
+  "active": true,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "RSS Read2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read3": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-03-27T09:43:29.375Z",
+  "id": "edo1150N0LhMZW8N",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Bot Telegram đọc báo",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        420
+      ],
+      "id": "ac0d25fe-a5f0-469c-956e-035671d0d7a6",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://vnexpress.net/rss/cong-nghe.rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        600
+      ],
+      "id": "d8ed4b6d-11d4-431b-9db7-96dc1b10ca79",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "url": "https://vnexpress.net/rss/phap-luat.rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        280
+      ],
+      "id": "55169500-321d-44b5-be79-a2f0042caad8",
+      "name": "RSS Read1"
+    },
+    {
+      "parameters": {
+        "url": "https://vnexpress.net/rss/tin-moi-nhat.rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        440
+      ],
+      "id": "e2ac238c-8e2c-4666-ac75-c87206db5f02",
+      "name": "RSS Read2"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        420,
+        180
+      ],
+      "id": "711346c3-7397-4f00-8edb-cf13637ec2f3",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        860,
+        160
+      ],
+      "id": "05da66d4-1f9e-4981-b88d-af65bf5bf607",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6f2b8aeb-c8b0-47a4-b74c-21da5d4b7b93",
+              "leftValue": "={{ $json.pubDate  && new Date ($json.pubDate).getTime() >= new Date().getTime() - 120 * 60 * 1000 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        40
+      ],
+      "id": "bb47a85b-3612-4111-a4fb-9f73943247f9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "-4053661106",
+        "text": "={{ $json.title }}; {{ $json.contentSnippet }}; {{ $json.link }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "323d8259-f3c8-48f6-83c5-9b55627bbc10",
+      "name": "Telegram",
+      "webhookId": "19b97fec-ef5c-4f4e-a0e9-5dbb2f088b21",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZVhJ5FXFIrQfogV5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        800,
+        0
+      ],
+      "id": "bd8f88fb-fd32-440e-bd10-ba70e3a4a9dc",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "chatId": "-4053661106",
+        "text": "={{ $json.title }}; {{ $json.contentSnippet }}; {{ $json.link }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1080,
+        440
+      ],
+      "id": "a809e89f-f82c-4bb9-bd56-5207d9026cea",
+      "name": "Telegram1",
+      "webhookId": "19b97fec-ef5c-4f4e-a0e9-5dbb2f088b21",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZVhJ5FXFIrQfogV5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        580
+      ],
+      "id": "89856e55-ea9a-4799-b7b1-331e5d9749bf",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6f2b8aeb-c8b0-47a4-b74c-21da5d4b7b93",
+              "leftValue": "={{ $json.pubDate  && new Date ($json.pubDate).getTime() >= new Date().getTime() - 15 * 60 * 1000 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        700,
+        500
+      ],
+      "id": "c62f3b6a-8160-4797-9f66-134a7b0de272",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "url": "https://rss.app/feeds/MMwkp9mGHT3mUqDV.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        860
+      ],
+      "id": "44549eca-884f-40b6-a0dd-21be84642f7d",
+      "name": "RSS Read3"
+    },
+    {
+      "parameters": {
+        "chatId": "-4053661106",
+        "text": "={{ $json.title }}; {{ $json.contentSnippet }}; {{ $json.link }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1260,
+        560
+      ],
+      "id": "e37cbcfd-7872-4b75-b027-b28fd7a8b924",
+      "name": "Telegram2",
+      "webhookId": "19b97fec-ef5c-4f4e-a0e9-5dbb2f088b21",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZVhJ5FXFIrQfogV5",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1jDWrICJuE07KwhaZBlQcipNNrA54D67UpwCzuenuD94/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jDWrICJuE07KwhaZBlQcipNNrA54D67UpwCzuenuD94/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "creator",
+              "displayName": "creator",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pubDate",
+              "displayName": "pubDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "dc:creator",
+              "displayName": "dc:creator",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "contentSnippet",
+              "displayName": "contentSnippet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "guid",
+              "displayName": "guid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "isoDate",
+              "displayName": "isoDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        540,
+        860
+      ],
+      "id": "e19294f9-0bd6-48a3-afec-2e9f44015955",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.facebook.com/moducyeuthuong/posts/pfbid02VdCaksknnthJcC555uAzNFPzHwjpYAtjsT5YNaxq7GNWUV2bchDDH8boEs67Wf52l",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        760,
+        740
+      ],
+      "id": "f9c2ce77-b336-444d-a1c4-b448de433d07",
+      "name": "HTTP Request",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "qgl69jWQ87hn6xml",
+          "name": "Facebook Graph account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.content; // Lấy HTML từ node trước\nconst videoRegex = /https:\\/\\/video\\.[a-z0-9-]+\\.fbcdn\\.net\\/[^\\s\"]+/; // Regex tìm URL video\nconst match = html.match(videoRegex);\n\nif (match) {\n    return [{ json: { videoUrl: match[0] } }];\n} else {\n    throw new Error(\"Không tìm thấy URL video trong HTML\");\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        860
+      ],
+      "id": "c02d1fd1-fa2b-41bc-a4d8-3bcd495f8bd1",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    },
+    "node:Schedule Trigger1": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-03-28T07:11:04.000Z",
+  "versionId": "bf965ab1-1acc-4740-bed1-f022f5edb0ec"
+}
