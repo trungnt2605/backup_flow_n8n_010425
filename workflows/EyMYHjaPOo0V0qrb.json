@@ -1,0 +1,178 @@
+{
+  "active": false,
+  "connections": {
+    "GetBinaryData": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-31T01:45:52.689Z",
+  "id": "EyMYHjaPOo0V0qrb",
+  "meta": null,
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "id": "4cd80a2c-6dcc-43a0-bcbe-cf147b8d3b29",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "CUSTOM.TiktokDownload",
+      "typeVersion": 1,
+      "position": [
+        340,
+        100
+      ],
+      "id": "f0bd00d6-b9d9-4349-9bce-ecd3c849450c",
+      "name": "TiktokDownload"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        100
+      ],
+      "id": "073cb39a-9a19-404d-9769-092d0cf9043c",
+      "name": "GetBinaryData"
+    },
+    {
+      "parameters": {
+        "operation": "sendVideo",
+        "chatId": "-4700961775",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        100
+      ],
+      "id": "002a056b-baa3-4ecc-847a-bc05b8af1fcd",
+      "name": "Telegram",
+      "webhookId": "7759f786-48ee-43c8-9ba2-9bf4c1fb50fb"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "11hHm7lJqWx8D_EdvGmkRY_iGMKqWdOPbU-bYZeXJXZg",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11hHm7lJqWx8D_EdvGmkRY_iGMKqWdOPbU-bYZeXJXZg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e588b3de-317f-42b1-b88d-d587128b8195",
+      "name": "Google Sheets Trigger"
+    },
+    {
+      "parameters": {
+        "name": "=",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1yfvFvMvdVo-06v7mxovrkxfs9QZN9lCj",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        560,
+        320
+      ],
+      "id": "4c850885-60ff-48b8-bd2a-9079786d8af0",
+      "name": "Google Drive"
+    },
+    {
+      "parameters": {
+        "chatId": "-4700961775",
+        "text": "=Link video donwload: {{ $json.webContentLink }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        320
+      ],
+      "id": "b6e93a94-89b5-48a8-bac3-44ec09ac6abd",
+      "name": "Telegram1",
+      "webhookId": "7759f786-48ee-43c8-9ba2-9bf4c1fb50fb"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-31T01:45:52.689Z",
+  "versionId": "b1dbf4a6-c048-494f-8d8e-c803b897d0e3"
+}
