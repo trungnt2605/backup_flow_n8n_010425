@@ -1,0 +1,317 @@
+{
+  "active": false,
+  "connections": {
+    "Run Actor": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Nextcloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nextcloud": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-03-27T07:38:14.747Z",
+  "id": "Fd1aIeNXBPaiCuDs",
+  "meta": null,
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/apify~facebook-posts-scraper/run-sync-get-dataset-items?token=THAY_APIKEY",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"resultsLimit\": 5,\n    \"startUrls\": [\n        {\n            \"url\": \"https://www.facebook.com/WebMedia.com.vn/\",\n            \"method\": \"GET\"\n        }\n    ]\n}",
+        "options": {}
+      },
+      "id": "2e7df358-d985-4f1e-9311-b6d7cfae7391",
+      "name": "Run Actor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1d2e5f3-f4b9-4f02-8b6d-a9343b6fb3d0",
+              "name": "ptb_Response",
+              "value": "={{ $json.ptb }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "6a5faf20-aab8-4dc7-9904-20c31135dcb8",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "text",
+              "renameField": "="
+            },
+            {
+              "fieldToAggregate": "likes"
+            },
+            {
+              "fieldToAggregate": "time"
+            },
+            {
+              "fieldToAggregate": "url"
+            }
+          ]
+        },
+        "options": {
+          "mergeLists": true
+        }
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        500,
+        0
+      ],
+      "id": "394b8b83-2981-4f9b-82b3-ba1e0036d746",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Khởi tạo mảng rỗng ptb để chứa các post riêng lẻ\nconst ptb = [];\n\n// Lặp qua từng item sau khi aggregate (mỗi item chứa các trường là mảng)\nfor (const item of items) {\n  // Lấy ra các trường đã được aggregate\n  const { text, likes, time, url } = item.json;\n\n  // Lặp qua từng phần tử của mảng (giả sử các mảng này cùng độ dài)\n  for (let i = 0; i < text.length; i++) {\n    ptb.push({\n      text: text[i],\n      likes: likes[i],\n      time: time[i],\n      url: url[i]\n    });\n  }\n}\n\n// Trả về một item duy nhất, chứa mảng ptb trong trường json\nreturn [\n  {\n    json: {\n      ptb: ptb\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        0
+      ],
+      "id": "2d63e90d-39ab-405b-9cff-2b87796ada36",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "url": "https://nextcloud.anhanh.click/apps/files_sharing/publicpreview/o5gaRrLm5QQ88bS?file=/&fileId=9&x=2880&y=1800&a=true&etag=7cdb1e270eb6a70b34b723154fb95578",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        340,
+        340
+      ],
+      "id": "af10ffcb-1522-41f8-b3b0-3d888904c06f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.nextCloud",
+      "typeVersion": 1,
+      "position": [
+        560,
+        340
+      ],
+      "id": "0d10e844-6762-446b-bdca-d71264a1a00a",
+      "name": "Nextcloud"
+    },
+    {
+      "parameters": {
+        "url": "=https://image.pollinations.ai/prompt/ {{ $json.Content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        780,
+        480
+      ],
+      "id": "ec5c85bb-3341-4c84-a06b-32cb2ef0f59e",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1bhaVKV0sZJ6YeDsTysZL-vDFxYiAcdBPVyFRfzbiYrw/edit?gid=962047826#gid=962047826",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 962047826,
+          "mode": "list",
+          "cachedResultName": "Trang tính2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bhaVKV0sZJ6YeDsTysZL-vDFxYiAcdBPVyFRfzbiYrw/edit#gid=962047826"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        500
+      ],
+      "id": "719da206-7ee7-4506-be17-372b8afac183",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        40,
+        480
+      ],
+      "id": "06415534-32b6-452e-88ad-999eb30edad1",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://upload.anhngoc.io.vn/wp-json/wp/v2/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "wordpressApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "image/png"
+            },
+            {
+              "name": "content-dis",
+              "value": "={{ $json.Content }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1000,
+        480
+      ],
+      "id": "3b2bff70-164e-4a1a-a95e-daa201c80823",
+      "name": "HTTP Request2",
+      "credentials": {
+        "wordpressApi": {
+          "id": "gMrHDx8TpvLmsX8G",
+          "name": "Wordpress account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-03-27T06:31:22.429Z",
+      "updatedAt": "2025-03-27T06:31:22.429Z",
+      "id": "3gYIuw4Pz2ueQiOM",
+      "name": "share"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-03-27T09:42:46.000Z",
+  "versionId": "f21f6646-d47b-415e-ab6a-b14c31f86515"
+}
