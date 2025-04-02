@@ -3,7 +3,13 @@
   "connections": {
     "AI Agent": {
       "main": [
-        []
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Code": {
@@ -326,6 +332,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-03-31T09:04:33.000Z",
-  "versionId": "4ff744a1-ff9b-4236-b3da-e1137f976f2e"
+  "updatedAt": "2025-04-02T00:59:55.000Z",
+  "versionId": "94cf54f1-d1fe-499d-84d1-3cd149e3fe7d"
 }
