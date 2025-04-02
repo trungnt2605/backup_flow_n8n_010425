@@ -1,0 +1,270 @@
+{
+  "active": false,
+  "connections": {
+    "Check RAM usage": {
+      "main": [
+        [
+          {
+            "node": "Check Disk usage",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge check results",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Check Disk usage": {
+      "main": [
+        [
+          {
+            "node": "Check CPU usage",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge check results",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Check CPU usage": {
+      "main": [
+        [
+          {
+            "node": "Merge check results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge check results": {
+      "main": [
+        [
+          {
+            "node": "Check results against thresholds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check results against thresholds": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check RAM usage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-02T09:51:49.308Z",
+  "id": "Wt4s66llg1ibq56I",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "command": "free | awk '/Mem:/ {printf \"%.2f\", (1 - $7/$2) * 100}'"
+      },
+      "id": "4bc33fcb-40e5-4c48-ab7b-9de94dbf2225",
+      "name": "Check RAM usage",
+      "type": "n8n-nodes-base.ssh",
+      "position": [
+        200,
+        0
+      ],
+      "executeOnce": false,
+      "typeVersion": 1,
+      "credentials": {
+        "sshPassword": {
+          "id": "QihsH2yoBIrfccT4",
+          "name": "SSH Password account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "df -h | awk '$NF==\"/\"{printf \"%.2f\", $5}'"
+      },
+      "id": "a1d4207c-f0c0-41a5-9abb-095a0cfe528f",
+      "name": "Check Disk usage",
+      "type": "n8n-nodes-base.ssh",
+      "position": [
+        420,
+        0
+      ],
+      "executeOnce": false,
+      "typeVersion": 1,
+      "credentials": {
+        "sshPassword": {
+          "id": "QihsH2yoBIrfccT4",
+          "name": "SSH Password account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "top -bn 1 | grep \"Cpu(s)\" | sed \"s/.*, *\\([0-9.]*\\)%* id.*/\\1/\" | awk '{print 100 - $1}'"
+      },
+      "id": "39bdd38b-1162-4c04-95a3-29e003f924dc",
+      "name": "Check CPU usage",
+      "type": "n8n-nodes-base.ssh",
+      "position": [
+        620,
+        0
+      ],
+      "executeOnce": false,
+      "typeVersion": 1,
+      "credentials": {
+        "sshPassword": {
+          "id": "QihsH2yoBIrfccT4",
+          "name": "SSH Password account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "numberInputs": 3,
+        "query": "SELECT input1.stdout as CPU, input2.stdout as Disk, input3.stdout as RAM FROM input1 LEFT JOIN input2 ON input1.name = input2.id LEFT JOIN input3 ON input1.name = input3.id"
+      },
+      "id": "14d48d23-87f6-4a30-b62f-4977065d23c9",
+      "name": "Merge check results",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        -60,
+        340
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.CPU }}",
+              "operation": "largerEqual",
+              "value2": 80
+            },
+            {
+              "value1": "={{ $json.Disk }}",
+              "operation": "largerEqual",
+              "value2": 80
+            },
+            {
+              "value1": "={{ $json.RAM }}",
+              "operation": "largerEqual",
+              "value2": 80
+            }
+          ]
+        },
+        "combineOperation": "any"
+      },
+      "id": "1667498e-e28a-46a2-8228-c96b3b1791af",
+      "name": "Check results against thresholds",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        280,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "8e7a762a-c939-4ad8-91b9-154f9e72816a",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "sendTo": "1",
+        "subject": "1",
+        "message": "1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        600,
+        320
+      ],
+      "id": "856be8f4-5730-4142-8cba-b9fc5d311b55",
+      "name": "Gmail",
+      "webhookId": "c66d19a7-a286-4cd8-a807-25892d0c20a3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qn5xZJlfuEJKAGMO",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "-4053661106",
+        "text": "={{ $json.CPU }}{{ $json.RAM }}{{ $json.Disk }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        500,
+        240
+      ],
+      "id": "e382179f-a3ad-4be1-b96b-6ac9d52b9c15",
+      "name": "Telegram",
+      "webhookId": "52b8f08e-a3d6-4a52-879c-5e57cf2ebe42",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZVhJ5FXFIrQfogV5",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-04-02T09:57:47.000Z",
+  "versionId": "5031e2f6-20eb-4293-888c-d000f9c2b135"
+}
