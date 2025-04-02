@@ -23,6 +23,11 @@
             "node": "RSS Read3",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "RSS Read4",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -144,6 +149,17 @@
     "HTTP Request": {
       "main": [
         []
+      ]
+    },
+    "RSS Read4": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -608,6 +624,20 @@
       ],
       "id": "c02d1fd1-fa2b-41bc-a4d8-3bcd495f8bd1",
       "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "https://newsdata.io/api/1/news?apikey=pub_77681437bc76beee50d16a7c098d94a841955&q=https://www.facebook.com/groups/nguoiquangngai.vn ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        660
+      ],
+      "id": "824298d3-b874-45db-847c-44800626a02a",
+      "name": "RSS Read4"
     }
   ],
   "pinData": {},
@@ -624,6 +654,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-02T02:07:08.000Z",
-  "versionId": "891ff898-5059-4b7a-ab1d-3b9a61160889"
+  "updatedAt": "2025-04-02T09:44:34.000Z",
+  "versionId": "35937586-b3c9-49c9-b464-f5e974d9cbef"
 }
