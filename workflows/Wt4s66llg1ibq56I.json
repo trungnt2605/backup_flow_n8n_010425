@@ -59,7 +59,7 @@
       "main": [
         [
           {
-            "node": "Telegram",
+            "node": "Send Email",
             "type": "main",
             "index": 0
           }
@@ -68,13 +68,7 @@
     },
     "Schedule Trigger": {
       "main": [
-        [
-          {
-            "node": "Check RAM usage",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -214,46 +208,26 @@
     },
     {
       "parameters": {
-        "sendTo": "1",
-        "subject": "1",
-        "message": "1",
+        "fromEmail": "trungnguyen26051988@gmail.com",
+        "toEmail": "trungnguyen26051988@gmail.com",
+        "subject": "LỖI",
+        "emailFormat": "text",
+        "text": "={{ $json.CPU }}\n{{ $json.Disk }}\n{{ $json.RAM }}",
         "options": {}
       },
-      "type": "n8n-nodes-base.gmail",
+      "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2.1,
-      "position": [
-        600,
-        320
-      ],
-      "id": "856be8f4-5730-4142-8cba-b9fc5d311b55",
-      "name": "Gmail",
-      "webhookId": "c66d19a7-a286-4cd8-a807-25892d0c20a3",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "qn5xZJlfuEJKAGMO",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "chatId": "-4053661106",
-        "text": "={{ $json.CPU }}{{ $json.RAM }}{{ $json.Disk }}",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
       "position": [
         500,
         240
       ],
-      "id": "e382179f-a3ad-4be1-b96b-6ac9d52b9c15",
-      "name": "Telegram",
-      "webhookId": "52b8f08e-a3d6-4a52-879c-5e57cf2ebe42",
+      "id": "241f2af9-345a-40f3-be4a-575b36fa74e4",
+      "name": "Send Email",
+      "webhookId": "141e6e23-5ac1-4891-b317-9730caeefa80",
       "credentials": {
-        "telegramApi": {
-          "id": "ZVhJ5FXFIrQfogV5",
-          "name": "Telegram account"
+        "smtp": {
+          "id": "MPinxupn2XwvtYkR",
+          "name": "SMTP account"
         }
       }
     }
@@ -265,6 +239,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-02T09:57:47.000Z",
-  "versionId": "5031e2f6-20eb-4293-888c-d000f9c2b135"
+  "updatedAt": "2025-04-02T10:37:15.000Z",
+  "versionId": "a587da8d-b866-45ef-a165-00fd6ae2f361"
 }
