@@ -198,7 +198,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const data = {\n  \"phat_am_tieng_viet\": \"Xít-tờ /ˈsɪs.tər/\",\n  \"dich_nghia\": {\n    \"nghia_pho_bien\": \"Chị gái hoặc em gái\",\n    \"chi_gai\": \"Chị (dùng cho chị gái lớn tuổi hơn)\",\n    \"em_gai\": \"Em gái (dùng cho em gái nhỏ tuổi hơn)\"\n  }\n};\n\nreturn [\n  {\n    json: {\n      fileName: \"sister_full.json\",\n      content: JSON.stringify(data, null, 2)\n    }\n  },\n  {\n    json: {\n      fileName: \"sister_dich_nghia.json\",\n      content: JSON.stringify(data[\"dich_nghia\"], null, 2)\n    }\n  }\n];"
+        "jsCode": "console.log(wordObject.tu_tieng_anh); // \"coat\"\nconsole.log(wordObject.cach_doc_tieng_viet); // \"KHÂU-T (Trong đó 'KH' giống chữ 'kh' trong tiếng Việt, 'ÂU' giống vần 'âu' trong 'câu', và 'T' là âm cuối bật nhẹ)\"\nconsole.log(wordObject.dich_nghia[0].nghia[0]); // \"Áo khoác (loại áo mặc bên ngoài, thường dài)\"\nconsole.log(wordObject.dich_nghia[1].nghia[0]); // \"Phủ lên, sơn lên (ví dụ: to coat the wall with paint - sơn phủ lên tường)\""
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -217,6 +217,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-02T00:59:59.000Z",
-  "versionId": "766afb52-a4cc-4215-8bdd-1ae7eeba17d4"
+  "updatedAt": "2025-04-02T02:47:23.000Z",
+  "versionId": "218c8ecd-5f5f-4bec-ba03-193c3af5c168"
 }
