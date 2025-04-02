@@ -22,6 +22,22 @@
           }
         ]
       ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        []
+      ]
     }
   },
   "createdAt": "2025-03-31T07:13:54.491Z",
@@ -57,7 +73,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "\n- Hãy đọc phát âm đoạn văn theo cách tiếng việt cho tôi\n- Dịch đoạn văn sang tiếng việt\n\nđoạn văn: \n {{ $json.message.text }}",
+        "text": "=\n- Hãy đọc phát âm từ {{ $json.message.text }} theo cách tiếng việt cho tôi\n- Dịch từ {{ $json.message.text }} sang tiếng việt\n\n",
         "options": {
           "systemMessage": "Bạn là một chuyên gia về lĩnh vực Anh Văn. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese."
         }
@@ -90,6 +106,108 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ANH",
+              "displayName": "ANH",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PHÁT ÂM",
+              "displayName": "PHÁT ÂM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "VIỆT",
+              "displayName": "VIỆT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        780,
+        -80
+      ],
+      "id": "f5327264-7dbd-4829-9c31-ebaccea3f014",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = {\n  \"phat_am_tieng_viet\": \"Xít-tờ /ˈsɪs.tər/\",\n  \"dich_nghia\": {\n    \"nghia_pho_bien\": \"Chị gái hoặc em gái\",\n    \"chi_gai\": \"Chị (dùng cho chị gái lớn tuổi hơn)\",\n    \"em_gai\": \"Em gái (dùng cho em gái nhỏ tuổi hơn)\"\n  }\n};\n\nreturn [\n  {\n    json: {\n      fileName: \"sister_full.json\",\n      content: JSON.stringify(data, null, 2)\n    }\n  },\n  {\n    json: {\n      fileName: \"sister_dich_nghia.json\",\n      content: JSON.stringify(data[\"dich_nghia\"], null, 2)\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        180,
+        -60
+      ],
+      "id": "13a2975d-eb56-48a3-a3cf-cbbceca7af39",
+      "name": "Code"
     }
   ],
   "pinData": {},
@@ -99,6 +217,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-03-31T09:04:51.000Z",
-  "versionId": "525e9e74-ab29-4908-bd2a-a9c74c17ea30"
+  "updatedAt": "2025-04-02T00:59:59.000Z",
+  "versionId": "766afb52-a4cc-4215-8bdd-1ae7eeba17d4"
 }
