@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Đăng nh",
+            "node": "HTTP Request1",
             "type": "main",
             "index": 0
           }
@@ -35,11 +35,6 @@
         []
       ]
     },
-    "HTTP Request2": {
-      "main": [
-        []
-      ]
-    },
     "If1": {
       "main": [
         [
@@ -55,7 +50,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request2",
+            "node": "HTTP Request1",
             "type": "main",
             "index": 0
           }
@@ -78,6 +73,33 @@
         [
           {
             "node": "If1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Đăng nh2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Đăng nh2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
             "type": "main",
             "index": 0
           }
@@ -164,34 +186,6 @@
       ],
       "id": "3a7a662c-23c2-4fbc-b278-c368cc43b192",
       "name": "If"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://pve.anhngoc.io.vn/api2/json/nodes/pve/qemu/101/status/stop",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Cookie",
-              "value": "=PVEAuthCookie={{ $('Đăng nh').item.json.data.ticket }}; Path=/"
-            },
-            {
-              "name": "CSRFPreventionToken",
-              "value": "={{ $('Đăng nh').item.json.data.CSRFPreventionToken }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        40,
-        -360
-      ],
-      "id": "6863cf34-ae74-49d6-880d-77a5aece4780",
-      "name": "HTTP Request2"
     },
     {
       "parameters": {
@@ -356,10 +350,99 @@
       "webhookId": "1ffef2e7-5b76-4bc6-b37d-2f2a20e9ac16",
       "credentials": {
         "telegramApi": {
-          "id": "JJGUPzvDnCZm1f6e",
-          "name": "Telegram account 2"
+          "id": "R8M2s9hOLYFWqPQd",
+          "name": "Telegram account 3"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9989826b-10d8-4378-bd5a-071e56848829",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "start",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        100,
+        120
+      ],
+      "id": "3bec604d-657c-4f1c-9240-b6ce0022295d",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://pve.anhngoc.io.vn/api2/json/nodes/pve/qemu/101/status/start",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "=PVEAuthCookie={{ $('Đăng nh2').item.json.data.ticket }}; Path=/"
+            },
+            {
+              "name": "CSRFPreventionToken",
+              "value": "={{ $('Đăng nh2').item.json.data.CSRFPreventionToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        100
+      ],
+      "id": "9edceafb-a365-40c7-9d63-4493fcf19ff9",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://pve.anhngoc.io.vn/api2/json/access/ticket",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "n8n-api@pve"
+            },
+            {
+              "name": "password",
+              "value": "Khongco@0108"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        100
+      ],
+      "id": "cd1411b7-f62c-42e2-bea4-f1695ec3ce46",
+      "name": "Đăng nh2"
     }
   ],
   "pinData": {},
@@ -369,6 +452,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-03T07:00:21.000Z",
-  "versionId": "15237e5a-ba8b-4e4e-acd2-534338c0980d"
+  "updatedAt": "2025-04-03T07:12:15.000Z",
+  "versionId": "d6d8e24e-5c1d-44dc-b321-2db5c2e97353"
 }
