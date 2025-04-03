@@ -36,7 +36,13 @@
     },
     "When clicking ‘Test workflow’": {
       "main": [
-        []
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Google Sheets1": {
@@ -53,17 +59,6 @@
     "Google Sheets": {
       "main": [
         []
-      ]
-    },
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
       ]
     },
     "Google Sheets2": {
@@ -98,6 +93,17 @@
         [
           {
             "node": "Google Sheets3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
             "type": "main",
             "index": 0
           }
@@ -297,34 +303,11 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -660,
-        0
+        -740,
+        -40
       ],
       "id": "569ce581-85ca-48a0-a9bf-d1e92e96ba99",
       "name": "When clicking ‘Test workflow’"
-    },
-    {
-      "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        -720,
-        -360
-      ],
-      "id": "c3025e73-85e4-4ddb-86fc-3a764768ef16",
-      "name": "Telegram Trigger",
-      "webhookId": "780a577a-f5e3-44f8-8f57-a02c88c71ac0",
-      "credentials": {
-        "telegramApi": {
-          "id": "JJGUPzvDnCZm1f6e",
-          "name": "Telegram account 2"
-        }
-      }
     },
     {
       "parameters": {
@@ -425,9 +408,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=- Phát âm ipa {{ $json.message.text }}\n- Phát âm tiếng việt {{ $json.message.text }} \n- Dịch nghĩa {{ $json.message.text }}sang tiếng việt\n\n",
+        "text": "=Tiêu chuẩn \n- Phát âm ipa : {{ $json.message.text }}\n- Phát âm tiếng việt : {{ $json.message.text }} \n- Dịch nghĩa : {{ $json.message.text }}\n\n",
         "options": {
-          "systemMessage": "Bạn là một chuyên gia về Ngoại Ngữ. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese."
+          "systemMessage": "Bạn là một chuyên gia về Ngoại Ngữ. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese.Tuyệt đối trả ra output theo tiêu chuẩn của Prompt"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -569,6 +552,29 @@
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -600,
+        -520
+      ],
+      "id": "fb8a83e4-06bf-49e2-b78c-420f33e44367",
+      "name": "Telegram Trigger",
+      "webhookId": "bfa70931-f709-48de-9473-f85eb9151001",
+      "credentials": {
+        "telegramApi": {
+          "id": "R8M2s9hOLYFWqPQd",
+          "name": "Telegram account 3"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -578,6 +584,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-03T06:53:56.000Z",
-  "versionId": "c756e9ed-2bb3-4c82-95a5-d6de98c96a75"
+  "updatedAt": "2025-04-03T07:22:49.000Z",
+  "versionId": "26a5f578-d483-495b-a823-750813fa43ad"
 }
