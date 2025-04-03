@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "AI Agent1": {
       "main": [
@@ -36,6 +36,11 @@
     },
     "Google Sheets": {
       "main": [
+        []
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
         [
           {
             "node": "AI Agent1",
@@ -45,11 +50,11 @@
         ]
       ]
     },
-    "When clicking ‘Test workflow’": {
+    "Google Sheets3": {
       "main": [
         [
           {
-            "node": "Google Sheets",
+            "node": "Telegram",
             "type": "main",
             "index": 0
           }
@@ -67,9 +72,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Tiêu chuẩn \n- Phát âm ipa : {{ $json['Tiếng Anh'] }}\n- Phát âm tiếng việt : {{ $json['Tiếng Anh'] }}\n- Dịch nghĩa : {{ $json['Tiếng Anh'] }}\n",
+        "text": "={{ $json.message.text }}\noutput trả ra : word , ipa , translate , Pronounced in Vietnamese , phát âm theo cách người việt\n",
         "options": {
-          "systemMessage": "Bạn là một chuyên gia về Ngoại Ngữ. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese.\nĐầu ra bắt buộc\n- Phát âm ipa \n- Phát âm tiếng việt \n- Dịch nghĩa \n"
+          "systemMessage": "Bạn là một chuyên gia về Ngoại Ngữ. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese.\n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -132,10 +137,11 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "phát_âm_tiếng_việt": "={{ $json.short_out['phiên_âm_tiếng_việt'] }}",
-            "Tiếng Anh": "={{ $json.short_out['từ'] }}",
-            "phát_âm_ipa": "={{ $json.short_out['phiên_âm_ipa'] }}",
-            "Dịch Nghĩa": "={{ $json.short_out['nghĩa_tiếng_việt'] }}"
+            "Tiếng Anh": "={{ $json.short_out.word }}",
+            "Pronounced in Vietnamese": "={{ $json.short_out['Pronounced in Vietnamese'] }}",
+            "phát_âm_tiếng_việt": "={{ $json.short_out['phát âm theo cách người việt'] }}",
+            "Dịch Nghĩa": "={{ $json.short_out.translate }}",
+            "phát_âm_ipa": "={{ $json.short_out.ipa }}"
           },
           "matchingColumns": [
             "row_number"
@@ -154,6 +160,16 @@
             {
               "id": "phát_âm_ipa",
               "displayName": "phát_âm_ipa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Pronounced in Vietnamese",
+              "displayName": "Pronounced in Vietnamese",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -244,15 +260,51 @@
       }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
       "position": [
-        -820,
-        -360
+        -660,
+        -640
       ],
-      "id": "155c564f-8b92-46a4-9623-73f9a9ffbc0c",
-      "name": "When clicking ‘Test workflow’"
+      "id": "5182471c-d27c-445a-8728-c7e90eab4661",
+      "name": "Telegram Trigger",
+      "webhookId": "fbe616aa-48cc-4ddb-a301-bbd704b8bb71",
+      "credentials": {
+        "telegramApi": {
+          "id": "JJGUPzvDnCZm1f6e",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "5314136445",
+        "text": "=-  Từ vựng     : {{ $json['Tiếng Anh'] }}\n-  Phát âm 1   : {{ $json['Pronounced in Vietnamese'] }}\n-  Phát âm 2   : {{ $json['phát_âm_tiếng_việt'] }}\n-  Nghĩa       : {{ $json['Dịch Nghĩa'] }}\n",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        -500
+      ],
+      "id": "055eeb89-b0c1-4e89-a638-75f8fe69d6e9",
+      "name": "Telegram",
+      "webhookId": "3946ccab-e500-4f1d-b29f-b8875228f953",
+      "credentials": {
+        "telegramApi": {
+          "id": "JJGUPzvDnCZm1f6e",
+          "name": "Telegram account 2"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -262,6 +314,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-03T07:56:23.000Z",
-  "versionId": "2a7cf04e-864e-492d-abbe-78b1a7c8f70e"
+  "updatedAt": "2025-04-03T08:50:09.000Z",
+  "versionId": "2db5e911-9bb1-404b-8992-f937bd1eecff"
 }
