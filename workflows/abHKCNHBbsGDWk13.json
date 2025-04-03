@@ -1,0 +1,267 @@
+{
+  "active": false,
+  "connections": {
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-03T07:22:59.799Z",
+  "id": "abHKCNHBbsGDWk13",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Bot phiên âm tiếng anh copy",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Tiêu chuẩn \n- Phát âm ipa : {{ $json['Tiếng Anh'] }}\n- Phát âm tiếng việt : {{ $json['Tiếng Anh'] }}\n- Dịch nghĩa : {{ $json['Tiếng Anh'] }}\n",
+        "options": {
+          "systemMessage": "Bạn là một chuyên gia về Ngoại Ngữ. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese.\nĐầu ra bắt buộc\n- Phát âm ipa \n- Phát âm tiếng việt \n- Dịch nghĩa \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        -360,
+        -500
+      ],
+      "id": "2e664394-24ac-47f8-939d-b32edc2d4106",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        -240
+      ],
+      "id": "c93a5e2a-0300-46b0-afc2-cd1ef341859a",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "OQhJcKYWadD9NHUa",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let note = $input?.first()?.json?.output || \"\"; // Dùng optional chaining và giá trị mặc định\nlet splitResult = note.split(\"</think>\");\nif (splitResult.length > 1) {\n  note = splitResult[1].trim().replaceAll(\"\\n\", \"\").replaceAll(\"```\", \"\").replace(\"json\", \"\");\n} else {\n  note = splitResult[0].trim().replaceAll(\"\\n\", \"\").replaceAll(\"```\", \"\").replace(\"json\", \"\");\n}\ntry {\n  note = JSON.parse(note);\n} catch (e) {\n  note = {}; // Nếu JSON không hợp lệ, trả về object rỗng\n}\nreturn {json: {short_out: note}};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        20,
+        -500
+      ],
+      "id": "09b7e5b7-a0b9-4a61-b583-b54aef64517f",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phát_âm_tiếng_việt": "={{ $json.short_out['phiên_âm_tiếng_việt'] }}",
+            "Tiếng Anh": "={{ $json.short_out['từ'] }}",
+            "phát_âm_ipa": "={{ $json.short_out['phiên_âm_ipa'] }}",
+            "Dịch Nghĩa": "={{ $json.short_out['nghĩa_tiếng_việt'] }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Tiếng Anh",
+              "displayName": "Tiếng Anh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phát_âm_ipa",
+              "displayName": "phát_âm_ipa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phát_âm_tiếng_việt",
+              "displayName": "phát_âm_tiếng_việt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Dịch Nghĩa",
+              "displayName": "Dịch Nghĩa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "short_out",
+              "displayName": "short_out",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        360,
+        -500
+      ],
+      "id": "61a1cce9-0d4b-4e44-a767-ee9d10951c9e",
+      "name": "Google Sheets3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -640,
+        -380
+      ],
+      "id": "c7991edc-5852-4b1f-bd43-53039d41ca8e",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -820,
+        -360
+      ],
+      "id": "155c564f-8b92-46a4-9623-73f9a9ffbc0c",
+      "name": "When clicking ‘Test workflow’"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-04-03T07:56:23.000Z",
+  "versionId": "2a7cf04e-864e-492d-abbe-78b1a7c8f70e"
+}
