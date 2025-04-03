@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Google Gemini Chat Model": {
       "ai_languageModel": [
@@ -36,13 +36,7 @@
     },
     "When clicking ‘Test workflow’": {
       "main": [
-        [
-          {
-            "node": "Google Sheets1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Google Sheets1": {
@@ -447,7 +441,7 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.0-pro-exp",
+        "modelName": "models/gemini-2.0-flash",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
@@ -467,7 +461,20 @@
     },
     {
       "parameters": {
-        "operation": "update",
+        "jsCode": "let note = $input?.first()?.json?.output || \"\"; // Dùng optional chaining và giá trị mặc định\nlet splitResult = note.split(\"</think>\");\nif (splitResult.length > 1) {\n  note = splitResult[1].trim().replaceAll(\"\\n\", \"\").replaceAll(\"```\", \"\").replace(\"json\", \"\");\n} else {\n  note = splitResult[0].trim().replaceAll(\"\\n\", \"\").replaceAll(\"```\", \"\").replace(\"json\", \"\");\n}\ntry {\n  note = JSON.parse(note);\n} catch (e) {\n  note = {}; // Nếu JSON không hợp lệ, trả về object rỗng\n}\nreturn {json: {short_out: note}};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        20,
+        -500
+      ],
+      "id": "d50819de-f8dd-4405-b3e4-a9b5fc6aabe5",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
         "documentId": {
           "__rl": true,
           "value": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit?gid=0#gid=0",
@@ -483,10 +490,10 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "row_number": "={{ $('Google Sheets1').item.json.row_number }}",
-            "phát_âm_ipa": "={{ $json.short_out.phat_am_ipa }}",
             "phát_âm_tiếng_việt": "={{ $json.short_out.phat_am_tieng_viet }}",
-            "Dịch Nghĩa": "={{ $json.short_out.dich_nghia }}"
+            "Tiếng Anh": "{{ $json.message.text }}",
+            "phát_âm_ipa": "{{ $json.short_out.phat_am_ipa }}",
+            "Dịch Nghĩa": "{{ $json.short_out.dich_nghia }}"
           },
           "matchingColumns": [
             "row_number"
@@ -500,7 +507,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
               "id": "phát_âm_ipa",
@@ -533,15 +540,14 @@
               "removed": false
             },
             {
-              "id": "row_number",
-              "displayName": "row_number",
+              "id": "short_out",
+              "displayName": "short_out",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "readOnly": true,
-              "removed": false
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -552,10 +558,10 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        240,
+        360,
         -500
       ],
-      "id": "41451951-d866-4b6f-bc78-7d48bf161486",
+      "id": "1c89c877-9559-48de-bcac-5deda2600e01",
       "name": "Google Sheets3",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -563,19 +569,6 @@
           "name": "Google Sheets account"
         }
       }
-    },
-    {
-      "parameters": {
-        "jsCode": "let note = $input?.first()?.json?.output || \"\"; // Dùng optional chaining và giá trị mặc định\nlet splitResult = note.split(\"</think>\");\nif (splitResult.length > 1) {\n  note = splitResult[1].trim().replaceAll(\"\\n\", \"\").replaceAll(\"```\", \"\").replace(\"json\", \"\");\n} else {\n  note = splitResult[0].trim().replaceAll(\"\\n\", \"\").replaceAll(\"```\", \"\").replace(\"json\", \"\");\n}\ntry {\n  note = JSON.parse(note);\n} catch (e) {\n  note = {}; // Nếu JSON không hợp lệ, trả về object rỗng\n}\nreturn {json: {short_out: note}};"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        20,
-        -500
-      ],
-      "id": "d50819de-f8dd-4405-b3e4-a9b5fc6aabe5",
-      "name": "Code1"
     }
   ],
   "pinData": {},
@@ -585,6 +578,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-03T05:59:48.000Z",
-  "versionId": "4f69d5ad-0e19-4912-85f5-b1e989aa94e6"
+  "updatedAt": "2025-04-03T06:53:56.000Z",
+  "versionId": "c756e9ed-2bb3-4c82-95a5-d6de98c96a75"
 }
