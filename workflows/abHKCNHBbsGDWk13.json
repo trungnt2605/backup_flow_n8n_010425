@@ -72,7 +72,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $json.message.text }}\noutput trả ra : word , ipa , translate , Pronounced in Vietnamese , phát âm theo cách người việt\n",
+        "text": "={{ $json.message.text }}\noutput trả ra : word , ipa , translate , Pronounced in Vietnamese , phát_âm_gợi_ý_tiếng_việt, phát_âm_gợi_ý_tiếng_việt_của người viêtj\n",
         "options": {
           "systemMessage": "Bạn là một chuyên gia về Ngoại Ngữ. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese.\n\n"
         }
@@ -139,7 +139,7 @@
           "value": {
             "Tiếng Anh": "={{ $json.short_out.word }}",
             "Pronounced in Vietnamese": "={{ $json.short_out['Pronounced in Vietnamese'] }}",
-            "phát_âm_tiếng_việt": "={{ $json.short_out['phát âm theo cách người việt'] }}",
+            "phát_âm_tiếng_việt": "={{ $json.short_out['phát_âm_gợi_ý_tiếng_việt'] }}",
             "Dịch Nghĩa": "={{ $json.short_out.translate }}",
             "phát_âm_ipa": "={{ $json.short_out.ipa }}"
           },
@@ -277,8 +277,8 @@
       "webhookId": "fbe616aa-48cc-4ddb-a301-bbd704b8bb71",
       "credentials": {
         "telegramApi": {
-          "id": "JJGUPzvDnCZm1f6e",
-          "name": "Telegram account 2"
+          "id": "e5UwA4Fy2pIZU48U",
+          "name": "Telegram account 4"
         }
       }
     },
@@ -301,8 +301,8 @@
       "webhookId": "3946ccab-e500-4f1d-b29f-b8875228f953",
       "credentials": {
         "telegramApi": {
-          "id": "JJGUPzvDnCZm1f6e",
-          "name": "Telegram account 2"
+          "id": "e5UwA4Fy2pIZU48U",
+          "name": "Telegram account 4"
         }
       }
     }
@@ -314,6 +314,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-03T08:50:09.000Z",
-  "versionId": "2db5e911-9bb1-404b-8992-f937bd1eecff"
+  "updatedAt": "2025-04-03T09:55:24.000Z",
+  "versionId": "2f355a1f-3f28-44ab-9550-9099cdab0bb7"
 }
