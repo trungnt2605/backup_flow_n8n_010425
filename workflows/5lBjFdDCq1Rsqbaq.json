@@ -1,17 +1,6 @@
 {
   "active": false,
   "connections": {
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
@@ -38,6 +27,17 @@
       "main": [
         []
       ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-03-31T07:13:54.491Z",
@@ -49,33 +49,10 @@
   "nodes": [
     {
       "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.1,
-      "position": [
-        -400,
-        -60
-      ],
-      "id": "cb494f0d-6687-494d-89d9-f14e9d0e8754",
-      "name": "Telegram Trigger",
-      "webhookId": "8819e68e-82bc-4832-a600-c1cc6f627bf5",
-      "credentials": {
-        "telegramApi": {
-          "id": "JJGUPzvDnCZm1f6e",
-          "name": "Telegram account 2"
-        }
-      }
-    },
-    {
-      "parameters": {
         "promptType": "define",
-        "text": "=\n- Hãy đọc phát âm từ {{ $json.message.text }} theo cách tiếng việt cho tôi\n- Dịch từ {{ $json.message.text }} sang tiếng việt\n\n",
+        "text": "=- Phát âm {{ $json.message.text }}\n- Phát âm {{ $json.message.text }} theo cách tiếng việt\n- Dịch từ {{ $json.message.text }} sang tiếng việt\n\n",
         "options": {
-          "systemMessage": "Bạn là một chuyên gia về lĩnh vực Anh Văn. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese."
+          "systemMessage": "Bạn là một chuyên gia về Ngoại Ngữ. Luôn trả về dạng JSON. Tuyệt đối trả về tiếng Việt. Only return Vietnamese."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -89,7 +66,7 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-pro-exp-03-25",
+        "modelName": "models/gemini-2.0-pro-exp",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
@@ -198,16 +175,58 @@
     },
     {
       "parameters": {
-        "jsCode": "console.log(wordObject.tu_tieng_anh); // \"coat\"\nconsole.log(wordObject.cach_doc_tieng_viet); // \"KHÂU-T (Trong đó 'KH' giống chữ 'kh' trong tiếng Việt, 'ÂU' giống vần 'âu' trong 'câu', và 'T' là âm cuối bật nhẹ)\"\nconsole.log(wordObject.dich_nghia[0].nghia[0]); // \"Áo khoác (loại áo mặc bên ngoài, thường dài)\"\nconsole.log(wordObject.dich_nghia[1].nghia[0]); // \"Phủ lên, sơn lên (ví dụ: to coat the wall with paint - sơn phủ lên tường)\""
+        "jsCode": "let note = $input.first().json.output;\nnote = note.split(\"</think>\")[1].trim().replaceAll(\"\\n\",\"\").replaceAll(\"```\",\"\").replace(\"json\",\"\");\nnote = JSON.parse(note);\nreturn {json: {short_out: note}};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        180,
-        -60
+        300,
+        -80
       ],
       "id": "13a2975d-eb56-48a3-a3cf-cbbceca7af39",
       "name": "Code"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Hc67T92DmkN5FeDIqLYwcOsPHDxh88FWRTBno_j5H-U/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -420,
+        -40
+      ],
+      "id": "a0343986-ab29-4b52-9dc5-a0278172b9e4",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XeLvN1ll3oR6Pv1d",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        -260
+      ],
+      "id": "569ce581-85ca-48a0-a9bf-d1e92e96ba99",
+      "name": "When clicking ‘Test workflow’"
     }
   ],
   "pinData": {},
@@ -217,6 +236,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-02T02:47:23.000Z",
-  "versionId": "218c8ecd-5f5f-4bec-ba03-193c3af5c168"
+  "updatedAt": "2025-04-03T04:33:34.000Z",
+  "versionId": "eafaec24-7f2c-4148-85a8-5581310c9708"
 }
