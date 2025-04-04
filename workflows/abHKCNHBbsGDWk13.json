@@ -285,7 +285,7 @@
     {
       "parameters": {
         "chatId": "5314136445",
-        "text": "=-  Từ vựng     : {{ $json['Tiếng Anh'] }}\n-  Cách đọc Phát âm 1   : {{ $json['Pronounced in Vietnamese'] }}\n-  Cách đọc Phát âm 2   : {{ $json['phát_âm_tiếng_việt'] }}\n-  Nghĩa       : {{ $json['Dịch Nghĩa'] }}\n",
+        "text": "=-  Từ vựng              : {{ $json['Tiếng Anh'] }}\n-  Cách đọc Phát âm 1   : {{ $json['Pronounced in Vietnamese'] }}\n-  Cách đọc Phát âm 2   : {{ $json['phát_âm_tiếng_việt'] }}\n-  Nghĩa                : {{ $json['Dịch Nghĩa'] }}\n",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -314,6 +314,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-04T01:31:21.000Z",
-  "versionId": "d9b443fb-407a-43c7-a7f1-e180e375efd6"
+  "updatedAt": "2025-04-04T02:31:03.000Z",
+  "versionId": "02d5b42f-f495-4231-b1e3-8cd0753ae4d5"
 }
