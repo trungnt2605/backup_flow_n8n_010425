@@ -76,17 +76,6 @@
       "main": [
         []
       ]
-    },
-    "RSS Read3": {
-      "main": [
-        [
-          {
-            "node": "Google Sheets",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "createdAt": "2025-03-27T09:43:29.375Z",
@@ -500,17 +489,17 @@
     },
     {
       "parameters": {
-        "url": "https://rss.app/feeds/MMwkp9mGHT3mUqDV.xml",
+        "url": "https://newsdata.io/api/1/news?apikey=pub_77681437bc76beee50d16a7c098d94a841955&q=https://www.facebook.com/nguoi.mo.uc.247182 ",
         "options": {}
       },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
-        320,
-        860
+        20,
+        740
       ],
-      "id": "44549eca-884f-40b6-a0dd-21be84642f7d",
-      "name": "RSS Read3"
+      "id": "a8e102fe-74b1-4d52-8d9b-b64752a0ac06",
+      "name": "HTTP Request1"
     }
   ],
   "pinData": {},
@@ -527,6 +516,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-04T02:35:21.000Z",
-  "versionId": "1c5a1b97-7273-4927-a7da-68eb29f37622"
+  "updatedAt": "2025-04-04T10:13:47.000Z",
+  "versionId": "9936ec8f-b76a-49ff-8ed9-d780cfd30403"
 }
