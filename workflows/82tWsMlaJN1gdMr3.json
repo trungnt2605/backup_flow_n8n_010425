@@ -7,25 +7,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "My workflow 3",
-  "nodes": [
-    {
-      "parameters": {},
-      "type": "n8n-nodes-zalo-user.zaloUserLogin",
-      "typeVersion": 3,
-      "position": [
-        -720,
-        -320
-      ],
-      "id": "2b7de589-f4ca-409b-bdf7-ced09df091ca",
-      "name": "Zalo Login Via QR Code",
-      "credentials": {
-        "n8nApi": {
-          "id": "Ebn8oIaIbIDhsuwI",
-          "name": "n8n account 2"
-        }
-      }
-    }
-  ],
+  "nodes": [],
   "pinData": {},
   "settings": {
     "executionOrder": "v1"
@@ -33,6 +15,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-09T09:58:48.000Z",
-  "versionId": "7134b77d-6a81-4afc-af2e-ec5817dc0271"
+  "updatedAt": "2025-04-09T10:07:19.000Z",
+  "versionId": "60d98970-4614-4e7e-a598-0849fe574b54"
 }
