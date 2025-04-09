@@ -149,6 +149,28 @@
           }
         ]
       ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-03-25T02:51:54.529Z",
@@ -535,6 +557,77 @@
       ],
       "id": "f65bfaf0-d2d0-4882-b5a4-1c4a202c1fb3",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        560
+      ],
+      "id": "962d96e2-b1dc-4a16-a0bb-d5deae792c44",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "171a7654-5053-4a44-b302-f32663e1844a",
+              "leftValue": "={{ $json.execution.error.message }}",
+              "rightValue": "The DNS server returned an error, perhaps the server is offline",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        560
+      ],
+      "id": "53a12ee5-c34c-415c-a4b7-96f5210c4f17",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fromEmail": "trungnguyen26051988@gmail.com",
+        "toEmail": "trungnguyen26051988@gmail.com",
+        "subject": "ERROR : \"AUTO ĐĂNG BÀI BH ANHNGOC\"",
+        "emailFormat": "text",
+        "text": "ERROR : \"AUTO ĐĂNG BÀI BH ANHNGOC\"",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -740,
+        460
+      ],
+      "id": "76b8af32-b86e-43bb-aa62-da5afc57ed67",
+      "name": "Send Email",
+      "webhookId": "7b26d547-f701-490f-906c-6bac5937dc93",
+      "credentials": {
+        "smtp": {
+          "id": "MPinxupn2XwvtYkR",
+          "name": "SMTP account"
+        }
+      }
     }
   ],
   "pinData": {
@@ -566,6 +659,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-03-25T02:57:50.000Z",
-  "versionId": "edf66bae-8ba3-4c1b-ad16-d178be6e66e0"
+  "updatedAt": "2025-04-09T10:20:28.000Z",
+  "versionId": "658ed30e-3fc1-4ad7-8510-04ed5aa2deb8"
 }
