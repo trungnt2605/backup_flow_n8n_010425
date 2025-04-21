@@ -1,0 +1,642 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Upload to Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Gemini": {
+      "main": [
+        [
+          {
+            "node": "Analyze Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Image": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompt1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Image": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Prompt1": {
+      "main": [
+        [
+          {
+            "node": "Get Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-04-21T04:33:12.937Z",
+  "id": "ijHQg9eWPBNZlxS0",
+  "meta": null,
+  "name": "ghep anh",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        800,
+        80
+      ],
+      "id": "ce5abf18-3161-4095-9c27-aad7002e5c3f",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "18Ty8LrUPqYP7l9s4HUK-fGfpS7R15SaNP7vRzz3BctU",
+          "mode": "list",
+          "cachedResultName": "Hình ảnh sản phẩm (test)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18Ty8LrUPqYP7l9s4HUK-fGfpS7R15SaNP7vRzz3BctU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18Ty8LrUPqYP7l9s4HUK-fGfpS7R15SaNP7vRzz3BctU/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        980,
+        80
+      ],
+      "id": "248cb5e4-b420-463a-8111-4326bf225fef",
+      "name": "Google Sheets"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2dbc2513-d54e-47ce-8174-782b5ad96917",
+              "name": "Product Image",
+              "value": "={{ $json['Product Image'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1340,
+        80
+      ],
+      "id": "55e97abb-add5-4a42-87a5-f2ffa3b4065a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "candidates[0].content.parts[0].inlineData.data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        980,
+        800
+      ],
+      "id": "84d38930-4a4f-42bf-b37c-ffaaa5415a20",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Product Image'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1520,
+        80
+      ],
+      "id": "cbb6eee4-b79e-4424-8873-8b20d573da93",
+      "name": "Download Image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "<Api key Google>"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "start, upload, finalize"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Length",
+              "value": "123"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Type",
+              "value": "image/png"
+            },
+            {
+              "name": "Content-Type",
+              "value": "image/png"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        480
+      ],
+      "id": "6cc50477-555f-47db-bf1d-a698b9df4642",
+      "name": "Upload to Gemini"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Analyze the product in the provided image. Describe its shape, size, color, texture, and any distinguishing features in detail. Keep the description concise yet informative is about in under 10 words",
+        "imageUrls": "={{ $('Edit Fields').item.json['Product Image'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1160,
+        480
+      ],
+      "id": "626fd042-16c3-48e9-897b-9a82fd5917c0",
+      "name": "Analyze Image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=<google Api key>",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"fileData\": {\n            \"fileUri\": \"{{ $('Upload to Gemini').item.json.file.uri }}\",\n            \"mimeType\": \"{{ $('Upload to Gemini').item.json.file.mimeType }}\"\n          }\n        },\n        {\n          \"text\": \"{{ $json.message.content }}\"\n        }\n      ]\n    }\n],\n\"generationConfig\": {\n    \"temperature\": 1.4,\n    \"topK\": 40,\n    \"topP\": 0.95,\n    \"maxOutputTokens\": 8192,\n    \"responseModalities\": [\"Text\", \"Image\"]\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        800
+      ],
+      "id": "412db786-1583-482d-b33d-54dc33849a3e",
+      "name": "Get Image"
+    },
+    {
+      "parameters": {
+        "name": "data",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xSgxS3ehPGRY1dWAbPaSA8k1huFCy_mk",
+          "mode": "list",
+          "cachedResultName": "Ảnh (test)",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1xSgxS3ehPGRY1dWAbPaSA8k1huFCy_mk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1160,
+        800
+      ],
+      "id": "b7d46001-6f87-419f-b060-8dacf044656c",
+      "name": "Google Drive"
+    },
+    {
+      "parameters": {
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "anyone"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1520,
+        720
+      ],
+      "id": "756435c2-1961-451c-8d73-4d6707a5eef4",
+      "name": "Google Drive1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "18Ty8LrUPqYP7l9s4HUK-fGfpS7R15SaNP7vRzz3BctU",
+          "mode": "list",
+          "cachedResultName": "Hình ảnh sản phẩm (test)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18Ty8LrUPqYP7l9s4HUK-fGfpS7R15SaNP7vRzz3BctU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18Ty8LrUPqYP7l9s4HUK-fGfpS7R15SaNP7vRzz3BctU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Google Sheets').item.json.row_number }}",
+            "Generate Prompt": "={{ $('Generate Prompt1').item.json.message.content }}",
+            "Generate link": "={{ $json.webContentLink }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Product Image",
+              "displayName": "Product Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Product Image",
+              "displayName": "Product Image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Generate Prompt",
+              "displayName": "Generate Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Generate link",
+              "displayName": "Generate link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Generate image",
+              "displayName": "Generate image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1520,
+        900
+      ],
+      "id": "aabc252d-b6d4-4ada-b49e-0f94ae2a37bf",
+      "name": "Google Sheets1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "de11bd6e-d284-4956-8001-a3c9b3c223f5",
+              "leftValue": "={{ $json['Generate link'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1160,
+        80
+      ],
+      "id": "75d0803e-9b59-431e-a808-a0ac980d974f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Create a short prompt for an AI image generator that will be fed a photo of a cosmetic product, to ultimately have professional product photography.\n\nInclude a beautiful Vietnamese female model holding or using the product naturally, creating a sense of luxury and sophistication.\n\nEnsure soft lighting, close-up angles that highlight the product and the model’s skin, harmonious colors, and a gentle background tone to accentuate the product.\n\nAlways refer to the product, e.g., \"this [PRODUCT]\" so that the AI image generator knows it will be given an input photo of the product.\n\nAlways instruct to add subtle grain for a cinematic look.\n\nDo not describe other personal attributes such as race or gender beyond the specified details.\n\nThe product description will be sent to you. Only reply with the final prompt, nothing else, not even quotation marks.",
+              "role": "system"
+            },
+            {
+              "content": "=Description of the product:\n{{ $json.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1400,
+        480
+      ],
+      "id": "219d8394-19aa-424a-8b6c-7dc2f32f5606",
+      "name": "Generate Prompt1"
+    },
+    {
+      "parameters": {
+        "content": "## Bước 4: Phân tích sản phẩm và miêu tả ngoại hình",
+        "height": 300,
+        "width": 200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "56f865f1-cdf3-40ed-91c0-138476bd3340",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Bước 1: Lấy danh sách cần tạo ảnh",
+        "height": 280,
+        "width": 1040,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        700,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "35b3be7e-0c0c-4625-a5cb-103c3f51d64f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Bước 2: Tải ảnh lên Gemini",
+        "height": 300,
+        "width": 380,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        700,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "082b4c10-e36e-4ed1-a3f7-4e98077804f6",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Bước 5: Tạo prompt ảnh và giữ cấu trúc ngoại hình sản phẩm",
+        "height": 300,
+        "width": 380,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1360,
+        320
+      ],
+      "typeVersion": 1,
+      "id": "e11084e8-1977-4f9b-91b7-30c95d182339",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Bước 6: Tạo ảnh với Google Gemini\n### Model: Gemini 2.0  Flash (Image Generation) Experimental <sửa lại thêm api key vào cuối url>",
+        "height": 320,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        700,
+        680
+      ],
+      "typeVersion": 1,
+      "id": "d2f052c9-2d7e-483e-90a6-65e2bfcb11e2",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-04-21T04:32:08.778Z",
+      "updatedAt": "2025-04-21T04:32:08.778Z",
+      "id": "CRHZ7nz7dkv2ucQT",
+      "name": "Done"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-04-21T04:33:12.937Z",
+  "versionId": "b8beb02c-18dc-4dbb-9903-56e1fecc509d"
+}
