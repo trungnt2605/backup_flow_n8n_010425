@@ -608,7 +608,6 @@
         "toEmail": "trungnguyen26051988@gmail.com",
         "subject": "ERROR : \"AUTO ĐĂNG BÀI BH ANHNGOC\"",
         "emailFormat": "text",
-        "text": "ERROR : \"AUTO ĐĂNG BÀI BH ANHNGOC\"",
         "options": {
           "appendAttribution": false
         }
@@ -659,6 +658,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-04-09T10:20:28.000Z",
-  "versionId": "658ed30e-3fc1-4ad7-8510-04ed5aa2deb8"
+  "updatedAt": "2025-05-08T01:14:47.000Z",
+  "versionId": "27d5c1b6-cd6d-4088-80ac-8005c926b8e2"
 }
